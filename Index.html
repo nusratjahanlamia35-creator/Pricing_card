@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pricing — True Glass</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:60px 20px;
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#6a3de8,#24c6dc,#a855f7,#0f0c29);
+  background-size:400% 400%;
+  animation:bgMove 14s ease infinite;
+}
+@keyframes bgMove{
+  0%  {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.blob{
+  position:fixed;border-radius:50%;
+  filter:blur(90px);pointer-events:none;
+  animation:float 9s ease-in-out infinite;
+}
+.b1{width:500px;height:500px;background:rgba(168,85,247,0.55);top:-150px;left:-150px;animation-delay:0s}
+.b2{width:400px;height:400px;background:rgba(36,198,220,0.45);bottom:-100px;right:-100px;animation-delay:-4s}
+.b3{width:280px;height:280px;background:rgba(236,72,153,0.35);top:50%;left:60%;transform:translate(-50%,-50%);animation-delay:-7s}
+.b4{width:220px;height:220px;background:rgba(245,158,11,0.25);bottom:20%;left:10%;animation-delay:-2s}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-35px) scale(1.06)}
+}
+
+.wrap{position:relative;z-index:1;width:100%;max-width:1020px}
+
+.hdr{text-align:center;margin-bottom:44px;animation:up .7s ease both}
+
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.22);
+  border-radius:100px;padding:7px 20px;
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:#fff;margin-bottom:22px;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#22d3ee;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.7)}}
+
+.hdr h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  font-weight:800;color:#fff;
+  letter-spacing:-.04em;line-height:1.1;margin-bottom:12px;
+}
+.hdr h1 em{
+  font-style:italic;
+  background:linear-gradient(90deg,#c4b5fd,#22d3ee);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hdr p{color:rgba(255,255,255,0.6);font-size:.95rem;font-weight:300;line-height:1.7}
+
+.tog-row{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-bottom:50px;
+  animation:up .7s .1s ease both;
+}
+.lbl{font-size:.875rem;font-weight:500;color:rgba(255,255,255,0.45);transition:color .3s}
+.lbl.on{color:#fff}
+
+.tog{
+  width:58px;height:30px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.28);
+  border-radius:100px;cursor:pointer;position:relative;
+  transition:background .4s,border-color .4s;
+}
+.tog.yr{background:rgba(99,102,241,0.55);border-color:rgba(165,180,252,0.4)}
+.knob{
+  position:absolute;top:4px;left:4px;
+  width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);
+  transition:transform .4s cubic-bezier(.23,1,.32,1);
+}
+.tog.yr .knob{transform:translateX(28px)}
+
+.save-tag{
+  background:linear-gradient(135deg,#059669,#10b981);
+  color:#fff;font-size:.65rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 12px;border-radius:100px;
+  opacity:0;transform:scale(.7);
+  transition:opacity .35s,transform .35s;
+}
+.save-tag.on{opacity:1;transform:scale(1)}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  animation:up .7s .2s ease both;
+}
+
+/* 4. FLOATING keyframes */
+@keyframes cardFloat{
+  0%,100%{transform:translateY(0px)}
+  50%{transform:translateY(-10px)}
+}
+@keyframes cardFloatPop{
+  0%,100%{transform:translateY(0px)}
+  50%{transform:translateY(-13px)}
+}
+/* 3. SHINE SWEEP keyframe */
+@keyframes shineSweep{
+  0%  {left:-80%;opacity:0}
+  15% {opacity:1}
+  70% {opacity:.55}
+  100%{left:130%;opacity:0}
+}
+
+.card{
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  border-radius:24px;
+  padding:36px 28px 32px;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  color:#fff;
+  /* 4. Floating idle animation */
+  animation: cardFloat 6s ease-in-out infinite;
+  transition: box-shadow .35s, border-color .35s, background .35s;
+}
+
+/* top shimmer line */
+.card::before{
+  content:'';
+  position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
+  z-index:2;pointer-events:none;
+}
+
+/* 3. Shine sweep layer */
+.card::after{
+  content:'';
+  position:absolute;
+  top:-10%;left:-80%;
+  width:50%;height:120%;
+  background:linear-gradient(
+    105deg,
+    transparent 25%,
+    rgba(255,255,255,0.06) 44%,
+    rgba(255,255,255,0.22) 52%,
+    rgba(255,255,255,0.06) 60%,
+    transparent 75%
+  );
+  transform:skewX(-15deg);
+  pointer-events:none;z-index:1;opacity:0;
+}
+
+/* 1. HOVER SCALE  +  2. DYNAMIC GLOW */
+.card:hover{
+  animation-play-state:paused;
+  transform: translateY(-14px) scale(1.04);
+  border-color: rgba(255,255,255,0.44);
+  background: rgba(255,255,255,0.12);
+  box-shadow:
+    0 28px 70px rgba(0,0,0,0.45),
+    0 0 22px rgba(255,255,255,0.18),
+    0 0 55px rgba(168,85,247,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+}
+/* 3. Shine fires on hover */
+.card:hover::after{
+  animation: shineSweep .75s ease forwards;
+}
+
+.card.pop{
+  background:rgba(255,255,255,0.13);
+  border:1px solid rgba(255,255,255,0.32);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(199,210,254,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  /* 4. Pop card floats a bit higher, different rhythm */
+  animation: cardFloatPop 5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+.card.pop:hover{
+  animation-play-state:paused;
+  transform: translateY(-16px) scale(1.045);
+  border-color: rgba(199,210,254,0.65);
+  background: rgba(255,255,255,0.18);
+  box-shadow:
+    0 32px 80px rgba(0,0,0,0.5),
+    0 0 38px rgba(165,180,252,0.40),
+    0 0 80px rgba(99,102,241,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+.pop-badge{
+  position:absolute;top:20px;right:20px;
+  background:linear-gradient(135deg,#6366f1,#a855f7);
+  color:#fff;font-size:.62rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;
+  box-shadow:0 4px 18px rgba(99,102,241,0.55);
+}
+
+.ico{
+  width:50px;height:50px;border-radius:14px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:22px;
+}
+.ico svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.plan{font-size:.68rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px}
+
+.prow{display:flex;align-items:flex-end;gap:3px;margin-bottom:4px}
+.cur{font-size:1.2rem;font-weight:600;color:rgba(255,255,255,0.75);padding-bottom:9px}
+.pri{font-family:'Syne',sans-serif;font-size:3.4rem;font-weight:800;line-height:1;letter-spacing:-.04em;color:#fff}
+.per{font-size:.85rem;color:rgba(255,255,255,0.4);padding-bottom:9px;margin-left:2px}
+.note{font-size:.73rem;color:rgba(255,255,255,0.4);min-height:18px;margin-bottom:22px}
+
+hr{border:none;border-top:1px solid rgba(255,255,255,0.12);margin-bottom:22px}
+
+ul{list-style:none;display:flex;flex-direction:column;gap:12px;flex:1;margin-bottom:28px}
+li{display:flex;align-items:center;gap:10px;font-size:.875rem;font-weight:300;color:rgba(255,255,255,0.85)}
+.ck{
+  width:20px;height:20px;flex-shrink:0;border-radius:50%;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);
+  display:flex;align-items:center;justify-content:center;
+}
+.ck svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.card.pop .ck{background:rgba(99,102,241,0.6);border-color:rgba(165,180,252,0.45)}
+li.off{opacity:.3}
+
+.btn{
+  width:100%;padding:15px;border-radius:12px;
+  font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;
+  letter-spacing:.04em;cursor:pointer;border:none;
+  transition:transform .3s,box-shadow .3s,background .3s;
+}
+.btn:hover{transform:translateY(-3px)}
+
+.b-glass{
+  background:rgba(255,255,255,0.12);color:#fff;
+  border:1px solid rgba(255,255,255,0.25);
+  backdrop-filter:blur(10px);
+}
+.b-glass:hover{background:rgba(255,255,255,0.2);box-shadow:0 10px 28px rgba(0,0,0,0.3)}
+
+.b-grad{
+  background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;
+  box-shadow:0 8px 28px rgba(99,102,241,0.45);
+}
+.b-grad:hover{box-shadow:0 14px 42px rgba(99,102,241,0.65)}
+
+.b-gold{
+  background:rgba(245,158,11,0.14);color:#fbbf24;
+  border:1px solid rgba(245,158,11,0.32);
+  backdrop-filter:blur(10px);
+}
+.b-gold:hover{background:rgba(245,158,11,0.24);box-shadow:0 8px 24px rgba(245,158,11,0.25)}
+
+.guar{
+  position:relative;z-index:1;
+  margin-top:36px;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  color:rgba(255,255,255,0.45);font-size:.78rem;
+  animation:up .7s .4s ease both;
+}
+.guar svg{width:15px;height:15px;stroke:#22d3ee;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:860px){
+  .grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+  .card.pop{order:-1}
+}
+@media(max-width:480px){
+  .hdr h1{font-size:2rem}
+  .card{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<div class="blob b4"></div>
+
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="pill"><span class="dot"></span> Transparent Pricing</div>
+    <h1>Choose Your <em>Perfect Plan</em></h1>
+    <p>No hidden fees. Cancel anytime.<br>Start free and scale when ready.</p>
+  </div>
+
+  <div class="tog-row">
+    <span class="lbl on" id="lm">Monthly</span>
+    <div class="tog" id="tg" onclick="sw()"><div class="knob"></div></div>
+    <span class="lbl" id="ly">Yearly</span>
+    <div class="save-tag" id="sv">Save 30%</div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <div class="plan">Starter</div>
+      <div class="prow"><span class="cur">$</span><span class="pri" id="p1">9</span><span class="per">/mo</span></div>
+      <p class="note" id="n1">&nbsp;</p>
+      <hr/>
+      <ul>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>3 Projects</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>5 GB Storage</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Basic Analytics</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Email Support</li>
+        <li class="off"><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Custom Domain</li>
+        <li class="off"><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Priority Support</li>
+      </ul>
+      <button class="btn b-glass">Get Started</button>
+    </div>
+
+    <div class="card pop">
+      <div class="pop-badge">⭐ Most Popular</div>
+      <div class="ico"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="plan">Pro</div>
+      <div class="prow"><span class="cur">$</span><span class="pri" id="p2">29</span><span class="per">/mo</span></div>
+      <p class="note" id="n2">&nbsp;</p>
+      <hr/>
+      <ul>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Unlimited Projects</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>50 GB Storage</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Advanced Analytics</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Priority Support</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Custom Domain</li>
+        <li class="off"><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>White Label</li>
+      </ul>
+      <button class="btn b-grad">Start Free Trial</button>
+    </div>
+
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="plan">Enterprise</div>
+      <div class="prow"><span class="cur">$</span><span class="pri" id="p3">79</span><span class="per">/mo</span></div>
+      <p class="note" id="n3">&nbsp;</p>
+      <hr/>
+      <ul>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Unlimited Everything</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>500 GB Storage</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>Custom Analytics</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>24/7 Dedicated Support</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>White Label</li>
+        <li><span class="ck"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>SLA Agreement</li>
+      </ul>
+      <button class="btn b-gold">Contact Sales</button>
+    </div>
+
+  </div>
+
+  <div class="guar">
+    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    30-day money-back guarantee · No credit card required · Cancel anytime
+  </div>
+
+</div>
+
+<script>
+const mo={p1:9,p2:29,p3:79};
+const yr={p1:6,p2:20,p3:55};
+let isYr=false;
+
+function anim(el,from,to){
+  const dur=420,s=performance.now();
+  (function step(now){
+    const t=Math.min((now-s)/dur,1),e=1-Math.pow(1-t,3);
+    el.textContent=Math.round(from+(to-from)*e);
+    t<1?requestAnimationFrame(step):el.textContent=to;
+  })(s);
+}
+
+function sw(){
+  isYr=!isYr;
+  document.getElementById('tg').classList.toggle('yr',isYr);
+  document.getElementById('lm').classList.toggle('on',!isYr);
+  document.getElementById('ly').classList.toggle('on',isYr);
+  document.getElementById('sv').classList.toggle('on',isYr);
+  const p=isYr?yr:mo;
+  ['1','2','3'].forEach(i=>{
+    const el=document.getElementById('p'+i);
+    anim(el,+el.textContent,p['p'+i]);
+    document.getElementById('n'+i).textContent=isYr?'billed annually':'\u00a0';
+  });
+}
+</script>
+</body>
+</html>
